@@ -135,6 +135,35 @@ def button_handlers(call):
         pass
 
 
+@bot.callback_query_handler(func=lambda call: call.data)
+def button_handlers(call):
+    global score
+    # Ранее мы определили аргументы callback_data для кнопок inline меню, они нам сейчас пригодятся.
+    # callback_data содержится в поле data объекта call.
+    # Нам необходимо определить поведение для каждой кнопки. Для этого воспользуемся if - elif:
+    if call.data == 'lose_button':
+        # Если нажата кнопка "Сдаться". То выводим набранные очки и обнуляем счет
+        bot.send_message(call.message.chat.id, f'Вы сдались. {score}', reply_markup=inline_menu)
+        cities_used.clear()
+        score = 0
+    elif call.data == 'score_button':
+        # Если нажата кнопка "Очки". То выводим набранные очки и обнуляем счет
+        bot.send_message(call.message.chat.id, str(score))
+    elif call.data == 'restart_button':
+        # Если нажата кнопка "Перезапустить". То перезапускаем игру
+        bot.send_message(call.message.chat.id, f'restart, score={score}')
+        cities_used.clear()
+        score = 0
+    elif call.data == 'help_button':
+        # Если нажата кнопка "Подсказка". То выводим reply меню с подсказками
+        reply_menu = telebot.types.ReplyKeyboardMarkup(row_width=3)
+        clue1_button = telebot.types.KeyboardButton("Москва")
+        clue2_button = telebot.types.KeyboardButton("Одинцово")
+        clue3_button = telebot.types.KeyboardButton("Звенигород")
+
+
+
+
 # Удаление клавиатуры с кнопками
 @bot.message_handler(commands=['/clear'])
 def echo(message: Message):

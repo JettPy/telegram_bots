@@ -12,6 +12,7 @@ bot = telebot.TeleBot(config.get('TOKENS','API_TOKEN'))
 
 words = ['лиса', 'зима', 'лето']
 used = set()
+
 word = ''
 answer = ''
 hp = 0
